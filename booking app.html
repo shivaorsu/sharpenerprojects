@@ -22,6 +22,22 @@
                 localStorage.setItem("name",name);
                 localStorage.setItem("email",email);
                 localStorage.setItem("phonenumber",phonenumber);
+                const obj = {
+                name,
+                email,
+                phonenumber
+            }
+              localStorage.setItem(obj.email,JSON.stringify(obj));
+              showNewUserOnScreen(obj)
+            }
+
+            function showNewUserOnScreen(user){
+                
+                const parentNode = document.getElementById("lisOfUsers");
+
+                const childHTML = "<li> ${user.name} - ${user.email} </li>"
+                
+                parentNode.innerHTML = parentNode.innerHTML + childHTML;
             }
             
 
