@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="em">
+    <head>
+        <meta charset="utf=8">
+        <meta name="viewport" content="Width=device-width, initial-scale=1.0">
+        <meta http-equiv="x-UA-Compatible" content="ie=edge">
+        <title>Shiva Orsu</title>
+    </head>
+    <body>
+        <h1 id="heading">Shiva Loves Sharpener</h1>
+        <button id="ClickMe">ClickMe</button>
+        <script>
+            function attach(){
+                let count=0;
+                document.getElementById("clickMe").addEventListener("click",function xyz(){
+                    console.log("Button Clicked",count++);
+                });
+            }
+            attach();
+        </script>
+    </body>
+</html>
