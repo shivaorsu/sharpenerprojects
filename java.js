@@ -1,32 +1,35 @@
 const posts=[
-    {titile: 'post one', body:'This is post one',createdAt:new Date().getTime},
-    { titile: "post two", body:"this is post two",createdAt:new Date().getTime}
+    {titile: 'post one', body:'This is post one'},
+    { titile: "post two", body:"this is post two"}
 ];
-
-function  getPost(){
-    let output="";
-    for(let i=0;i<posts.length;i++){
-        output+='<li>${posts[i].title} - last update ${(new Date().getTime() - posts[i].createdAt)/1000} seconds ago </li>'
-
-
-    }
-    document.body.innerHTML=output;
-}
-
-function createPost(post,callback){
+function getPosts(){
     setTimeout(()=>{
+        let output='';
+        posts.forEach((posts,index)=>{
+            output +='<li>${post.title}</li>';
+        });
+        document.body.innerHTML = output;
+    },1000);
+  }
 
-        posts.push({...post,createdAt:new Date().getTime()});
-
-        callback()
-    },2000)
-}
-
-function create4thPost(post,callback){
-    setTimeout(()=>{
-        posts.push({ ...post,createdAt:new Date().getTime()});
-        callback();
-    },6000)
-}
-  createPost({ titile:'post Three',body:"this is post three"}, getPost);
-  createPost({ titile:'post Four',body:"this is post four"}, getPost)
+  function createPost(post){
+    return new Promise((resolve, reject)=>{
+     setTimeout(()=>{
+        posts.push(post);
+        const error =true;
+        if(!error){
+            resolve();
+        }else {
+            reject('Error: Something went worng');
+        }
+     },2000);
+    });
+  }
+   
+const promise1 = promise.resolve("Hello world");
+const promise2 = 10;
+const promise3 = new promise ((resolve, rejecct)=>
+setTimeout(resolve,2000,"Goodbye")
+) 
+promise.all([promise1,promise2,promise3]).then((
+    (values) => console.log(values)));
