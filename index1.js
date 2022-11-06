@@ -27,8 +27,16 @@ function saveToLocalStorage(event){
         name,
         email,
       }
-      localStorage.setItem(obj.email,JSON.stringify(obj));
-      addUser(obj);
+       axios.post("https://crudcrud.com/api/1668f757c5844e07a41aaf7e6f11ecb2/appointmentdata",obj)
+      .then((response)=>{
+        addUser(response.data)
+        console.log(response)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+      //localStorage.setItem(obj.email,JSON.stringify(obj));
+      //addUser(obj);
 }
 
 function addUser(user){
