@@ -7,15 +7,18 @@ btn.addEventListener('click', (e)=>{
 
 
 window.addEventListener("DOMContentLoaded", () => {
-    const localStorageObj = localStorage;
-    const localstoragekeys  = Object.keys(localStorageObj)
+    axios.get("https://crudcrud.com/api/1668f757c5844e07a41aaf7e6f11ecb2/appointmentdata")
+    .then((response)=>{
+        console.log(response)
+        for(let i=0;i<response.data.length;i++){
+            addUser(response.data[i])
+        }
 
-    for(var i =0; i< localstoragekeys.length; i++){
-        const key = localstoragekeys[i]
-        const userDetailsString = localStorageObj[key];
-        const userDetailsObj = JSON.parse(userDetailsString);
-        addUser(userDetailsObj)
-    }
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+    
 })
 
 function saveToLocalStorage(event){
