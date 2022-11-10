@@ -1,94 +1,47 @@
-var btn = document.querySelector('.btn');
-btn.addEventListener('click', (e)=>{
-    document.querySelector('.btn').style.color = "white";
-    document.querySelector('.btn').style.background = "black";
-});
+document.addEventListener('submit', (e) => {
+    e.preventDefault();
 
+    var money = e.target.money.value;
+    var description = e.target.description.value;
+    var category = e.target.category.value;
 
-
-window.addEventListener("DOMContentLoaded", () => {
-    axios.get("https://crudcrud.com/api/c0400d14063147c0937030a18c620c6b/appointmentdata")
-    .then((response)=>{
-        console.log(response)
-        for(let i=0;i<response.data.length;i++){
-            addUser(response.data[i])
-        }
-
+    var obj = {
+        money: `${money}`,
+        description: `${description}`,
+        category: `${category}`
+    }
+    axios.post(`https://crudcrud.com/api/246759af955945dfa26537d823dc8223/shiva`,{obj})
+    .then((response) => {
+        showDetailsOnDisplay(response.data)
     })
-    .catch((error)=>{
-        console.log(error)
-    })
-    
+
 })
 
-function saveToLocalStorage(event){
-    event.preventDefault();
-    const ChooseExpenseamount = event.target.Expenseamount.value;
-    const Choosedescription = event.target.name.value;
-    const ChooseCategory =event.target.Category.value;
+window.addEventListener('DOMContentLoaded',(e) => {
+    e.preventDefault()
 
-    let obj = {
-        ChooseExpenseamount,
-        Choosedescription,
-        ChooseCategory,
-
-        
-        
-      }
-      axios.post("https://crudcrud.com/api/c0400d14063147c0937030a18c620c6b/appointmentdata",obj)
-      .then((response)=>{
-        addUser(response.data)
+    axios.get(`https://crudcrud.com/api/246759af955945dfa26537d823dc8223/shiva`)
+    .then((response) => {
         console.log(response)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
-      
-
-
-      //localStorage.setItem(obj.email,JSON.stringify(obj));
-      //addUser(obj);
-}
-
-function addUser(user){
-    if(localStorage.getItem(user.Choosedescription)!== null){
-        removeUser(user.Choosedescription);
-    }
-    const parentNode = document.getElementById('listOfUsers');
-    const childHTML = `<li id=${user._id}> ${user.ChooseExpenseamount}- ${user.Choosedescription}- ${user.ChooseCategory}
-    <button class="editbtn" onCLick=editUser('${user.Choosedescription}','${user.ChooseExpenseamount}',' '${user.ChooseCategory}','${user._id}')>Edit</button>
-    <button class="deletebtn" onCLick=deleteUser('${user._id}')>Delete</button>
-     
-    </li>`;
-    parentNode.innerHTML =  parentNode.innerHTML + childHTML;
-}
-
-function deleteUser(userId){
-    axios.delete('https://crudcrud.com/api/c0400d14063147c0937030a18c620c6b/appointmentdata/${user._id}')
-    .then((response)=>{
-        removeUser(userId);
+        let data = response.data;
+        for(let i=0;i<data.length;i++){
+            showDetailsOnDisplay(response.data[i])
+        }
     })
-    .catch((error)=>{
-        console.log(error)
+})
+
+function showDetailsOnDisplay(data) {
+    axios.get(`https://crudcrud.com/api/246759af955945dfa26537d823dc8223/shiva/${data._id}`)
+    .then((response) => {
+        console.log(response)
+        var parentNode = document.getElementById('resultContainer');
+        var childNode = `<li id=${data._id}>${data.obj.money}-${data.obj.description}-${data.obj.category}
+                        <button id="editBtn" onclick="editData('${data._id}')">Edit</button>
+                        <button id="deleteBtn" onclick="deleteData('${data._id}')">delete</button>
+                        </li>`
+        parentNode.innerHTML += childNode;
+        document.getElementById('money').value = ""
+        document.getElementById("description").value = ""
     })
-    // console.log(emailId)
-    //localStorage.removeItem(userId);
-    //removeUser(userId);
 }
 
-function removeUser(userId){
-    const parentNode = document.getElementById('listOfUsers');
-    const deletingChildNode = document.getElementById(userId);
-    if(deletingChildNode){
-        parentNode.removeChild(deletingChildNode);
-
-    }
-    
-}   
-function editUser(ChooseExpenseamount,Choosedescription,ChooseCategory,userId){
-    document.getElementById('ChooseExpenseamount').value =ChooseExpenseamount ;
-    document.getElementById('Choosedescription').value = Choosedescription;
-    document.getElementById('ChooseCategory').value = ChooseCategory;
-    deleteUser(userId);
-
-}
